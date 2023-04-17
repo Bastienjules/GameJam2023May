@@ -266,6 +266,7 @@ GameObject:
   - component: {fileID: 609945268}
   - component: {fileID: 609945271}
   - component: {fileID: 609945270}
+  - component: {fileID: 609945272}
   m_Layer: 0
   m_Name: PlayerHolder
   m_TagString: Player
@@ -327,8 +328,10 @@ MonoBehaviour:
     m_Bits: 64
   groundBoxSize: 1
   groundBoxHeight: 0.5
+  shieldKey: 324
   shield: {fileID: 1886003830}
   turnSmoothTime: 0.1
+  jumpKey: 32
   isJumping: 0
   jumpForce: 5
 --- !u!54 &609945269
@@ -371,6 +374,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5150a2f831e246ea8bc38bc3430781e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &609945272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 609945265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71bf2e2d509054fb7b68112a9ff108ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gravityY: 10
 --- !u!1 &785076161
 GameObject:
   m_ObjectHideFlags: 0

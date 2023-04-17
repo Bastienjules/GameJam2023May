@@ -26,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
 
 
     [Header("Sield")]
+    public KeyCode shieldKey = KeyCode.Mouse1;
     bool shieldMove = false;
     public GameObject shield;
 
@@ -35,6 +36,7 @@ public class PlayerMovement : MonoBehaviour
     float turnSmoothVelocity;
 
     [Header("Jump")]
+    public KeyCode jumpKey = KeyCode.Space;
     public bool isJumping;
     public float jumpForce;
 
@@ -109,11 +111,19 @@ public class PlayerMovement : MonoBehaviour
             transform.localEulerAngles = new Vector3(0, 90, 0);
         }
 
-        Vector3 moveDir = new Vector3(moveX, rb.velocity.y, moveZ).normalized;
+        Vector3 moveDir = new Vector3(moveX, 0, moveZ).normalized;
 
-        if (isGrounded == true)
+        if(isGrounded == true || isGrounded == false && isJumping == true)
         {
-            rb.velocity = moveDir * speed;
+            if (moveDir.magnitude > 0)
+            {
+                rb.velocity = moveDir * speed;
+            }
+
+            else
+            {
+                rb.velocity = Vector3.zero;
+            }
         }
 
         else
@@ -235,17 +245,10 @@ public class PlayerMovement : MonoBehaviour
 
     void Jump()
     {
-        if (isGrounded == true && Input.GetKey(KeyCode.Space))
+        if (isGrounded == true && Input.GetKey(jumpKey))
         {
             isJumping = true;
-            //rb.velocity = new Vector3(rb.velocity.x, 1, rb.velocity.z) * jumpForce;
-            rb.velocity = Vector3.up * jumpForce;
-        }
-
-
-        if(isGrounded == false && Input.GetKey(KeyCode.DownArrow))
-        {
-            rb.velocity = Vector3.down * (jumpForce);
+            rb.AddForce( Vector3.up * jumpForce);
         }
     }
 
