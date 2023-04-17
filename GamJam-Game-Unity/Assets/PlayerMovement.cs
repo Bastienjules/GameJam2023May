@@ -86,64 +86,39 @@ public class PlayerMovement : MonoBehaviour
 
     void FourDirMovement()
     {
-        if(Input.GetKey(KeyCode.Z))
+        float moveX = Input.GetAxisRaw("Horizontal");
+        float moveZ = Input.GetAxisRaw("Vertical");
+
+        if (moveZ > 0)
         {
-            move = true;
             transform.localEulerAngles = new Vector3(0, 0, 0);
-            if(isGrounded == true || isJumping == true && isGrounded == false)
-            {
-                rb.velocity = Vector3.forward * speed;
-            }
-
-            else
-            {
-                NoMove();
-            }
         }
 
-        if (Input.GetKey(KeyCode.S))
+        if (moveZ < 0)
         {
-            move = true;
             transform.localEulerAngles = new Vector3(0, 180, 0);
-            if (isGrounded == true || isJumping == true && isGrounded == false)
-            {
-                rb.velocity = Vector3.back * speed;
-            }
-
-            else
-            {
-                NoMove();
-            }
         }
 
-        if (Input.GetKey(KeyCode.Q))
+        if (moveX < 0)
         {
-            move = true;
             transform.localEulerAngles = new Vector3(0, -90, 0);
-            if (isGrounded == true || isJumping == true && isGrounded == false)
-            {
-                rb.velocity = Vector3.left * speed;
-            }
-
-            else
-            {
-                NoMove();
-            }
         }
 
-        if (Input.GetKey(KeyCode.D) || isJumping == true && isGrounded == false)
+        if (moveX > 0)
         {
-            move = true;
             transform.localEulerAngles = new Vector3(0, 90, 0);
-            if (isGrounded == true)
-            {
-                rb.velocity = Vector3.right * speed;
-            }
+        }
 
-            else
-            {
-                NoMove();
-            }
+        Vector3 moveDir = new Vector3(moveX, rb.velocity.y, moveZ).normalized;
+
+        if (isGrounded == true)
+        {
+            rb.velocity = moveDir * speed;
+        }
+
+        else
+        {
+            NoMove();
         }
     }
 
@@ -263,6 +238,7 @@ public class PlayerMovement : MonoBehaviour
         if (isGrounded == true && Input.GetKey(KeyCode.Space))
         {
             isJumping = true;
+            //rb.velocity = new Vector3(rb.velocity.x, 1, rb.velocity.z) * jumpForce;
             rb.velocity = Vector3.up * jumpForce;
         }
 
