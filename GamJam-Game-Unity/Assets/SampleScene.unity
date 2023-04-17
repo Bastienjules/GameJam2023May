@@ -333,7 +333,7 @@ MonoBehaviour:
   turnSmoothTime: 0.1
   jumpKey: 32
   isJumping: 0
-  jumpForce: 5
+  jumpForce: 500
 --- !u!54 &609945269
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -386,7 +386,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71bf2e2d509054fb7b68112a9ff108ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravityY: 10
+  gravityY: 50
 --- !u!1 &785076161
 GameObject:
   m_ObjectHideFlags: 0
