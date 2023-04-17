@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
     public Transform groundBox;
     public LayerMask groundLayer;
     public float groundBoxSize = 1;
+    public float groundBoxHeight = 0.5f;
     Vector3 groundDetectionRadius;
     bool isGrounded;
 
@@ -32,6 +33,10 @@ public class PlayerMovement : MonoBehaviour
     Transform theCam;
     public float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
+
+    [Header("Jump")]
+    public bool isJumping;
+    public float jumpForce;
 
     Rigidbody rb;
     void Start()
@@ -46,7 +51,7 @@ public class PlayerMovement : MonoBehaviour
                 break;
             case MovementType.MultiDirection:
                 multidir = true;
-                theCam.GetComponent<CameraBehaviour>().canRot = true;
+                theCam.GetComponentInParent<CameraBehaviour>().canRot = true;
                 break;
         }
 
@@ -73,8 +78,10 @@ public class PlayerMovement : MonoBehaviour
 
         if (multidir == true)
         {
-            //MultiDirMovement();
+            MultiDirMovement();
         }
+
+        Jump();
     }
 
     void FourDirMovement()
@@ -83,7 +90,7 @@ public class PlayerMovement : MonoBehaviour
         {
             move = true;
             transform.localEulerAngles = new Vector3(0, 0, 0);
-            if(isGrounded == true)
+            if(isGrounded == true || isJumping == true && isGrounded == false)
             {
                 rb.velocity = Vector3.forward * speed;
             }
@@ -98,7 +105,7 @@ public class PlayerMovement : MonoBehaviour
         {
             move = true;
             transform.localEulerAngles = new Vector3(0, 180, 0);
-            if (isGrounded == true)
+            if (isGrounded == true || isJumping == true && isGrounded == false)
             {
                 rb.velocity = Vector3.back * speed;
             }
@@ -113,7 +120,7 @@ public class PlayerMovement : MonoBehaviour
         {
             move = true;
             transform.localEulerAngles = new Vector3(0, -90, 0);
-            if (isGrounded == true)
+            if (isGrounded == true || isJumping == true && isGrounded == false)
             {
                 rb.velocity = Vector3.left * speed;
             }
@@ -124,7 +131,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.D) || isJumping == true && isGrounded == false)
         {
             move = true;
             transform.localEulerAngles = new Vector3(0, 90, 0);
@@ -138,65 +145,68 @@ public class PlayerMovement : MonoBehaviour
                 NoMove();
             }
         }
-
-        if(move == true)
-        {
-
-        }
-
-        else
-        {
-
-        }
     }
 
     void MultiDirMovement()
     {
-        float moveZ = 0;
-        float moveX = 0;
-
+        float moveX = 0f;
+        float moveZ = 0f;
         if (Input.GetKey(KeyCode.Z))
         {
-            moveZ += 1;
+            moveZ = +1f;
         }
 
         if (Input.GetKey(KeyCode.S))
         {
-            moveZ -= 1;
+            moveZ = -1f;
+
         }
 
         if (Input.GetKey(KeyCode.Q))
         {
-            moveX -= 1;
+            moveX = -1f;
+
         }
 
         if (Input.GetKey(KeyCode.D))
         {
-            moveX += 1;
+            moveX = +1f;
+
         }
 
-        Vector3 direction = new Vector3(moveX, transform.position.y, moveZ).normalized;
+        Vector3 direction = new Vector3(moveX, 0, moveZ).normalized;
 
-        if(isGrounded == true && direction.magnitude >0.1)
-        {
-            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + theCam.eulerAngles.y;
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
-            transform.rotation = Quaternion.Euler(0f, angle, 0f);
-
-            Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            rb.velocity = direction * speed;
-        }
-
-        else
+        bool isIdle = moveX == 0 && moveZ == 0;
+        if (isIdle || isGrounded == false)
         {
             NoMove();
         }
-    }
+
+        if (direction.magnitude >= 0.1f)
+        {
+                float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + theCam.eulerAngles.y;
+                float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+                transform.rotation = Quaternion.Euler(0f, angle, 0f);
+
+                Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+
+                if (isGrounded == true)
+                {
+                    rb.velocity = moveDir.normalized * speed;
+                }
+            }
+
+        }
 
     void GroundDetection()
     {
-        groundDetectionRadius = new Vector3(groundBoxSize, groundBoxSize, groundBoxSize);
+        groundDetectionRadius = new Vector3(groundBoxSize, groundBoxHeight, groundBoxSize);
         isGrounded = Physics.CheckBox(groundBox.position, groundDetectionRadius / 2, Quaternion.identity, groundLayer);
+
+        if(isGrounded == true)
+        {
+            isJumping = false;
+        }
     }
 
     void ChangeSpeed()
@@ -245,9 +255,23 @@ public class PlayerMovement : MonoBehaviour
 
     void NoMove()
     {
-        rb.velocity = Vector3.zero;
+        rb.velocity = new Vector3(0, rb.velocity.y, 0);
     }
 
+    void Jump()
+    {
+        if (isGrounded == true && Input.GetKey(KeyCode.Space))
+        {
+            isJumping = true;
+            rb.velocity = Vector3.up * jumpForce;
+        }
+
+
+        if(isGrounded == false && Input.GetKey(KeyCode.DownArrow))
+        {
+            rb.velocity = Vector3.down * (jumpForce);
+        }
+    }
 
     private void OnDrawGizmosSelected()
     {

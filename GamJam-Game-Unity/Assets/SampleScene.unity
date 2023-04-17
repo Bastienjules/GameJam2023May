@@ -326,7 +326,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   groundBoxSize: 1
+  groundBoxHeight: 0.5
   shield: {fileID: 1886003830}
+  turnSmoothTime: 0.1
+  isJumping: 0
+  jumpForce: 5
 --- !u!54 &609945269
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -641,6 +645,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   followSpeed: 2
+  canRot: 0
+  rotSpeed: 150
+  resetRotSpeed: 0.05
 --- !u!1 &1838598898
 GameObject:
   m_ObjectHideFlags: 0
