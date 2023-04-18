@@ -267,6 +267,8 @@ GameObject:
   - component: {fileID: 609945274}
   - component: {fileID: 609945275}
   - component: {fileID: 609945276}
+  - component: {fileID: 609945278}
+  - component: {fileID: 609945277}
   m_Layer: 0
   m_Name: PlayerHolder
   m_TagString: Player
@@ -349,6 +351,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeOfMove: 0
   speed: 5
+  body: {fileID: 1120123955}
 --- !u!114 &609945275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -381,7 +384,37 @@ MonoBehaviour:
   XZsizeBox: 1
   Yheight: 0.25
   isGrounded: 0
-  isJumping: 0
+--- !u!114 &609945277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 609945265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0620d67b1ce454d07978db4cd1444ca5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  walkSpeed: 5
+  runSpeed: 8
+  shieldSpeed: 2.5
+  speedKey: 304
+--- !u!114 &609945278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 609945265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33affd7ab9bae48ba985d1f935b4cf5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shieldKey: 324
+  shieldOn: 0
+  shield: {fileID: 1886003830}
 --- !u!1 &785076161
 GameObject:
   m_ObjectHideFlags: 0
@@ -788,7 +821,7 @@ GameObject:
   - component: {fileID: 1838598901}
   - component: {fileID: 1838598900}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: cap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

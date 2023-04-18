@@ -7,12 +7,15 @@ public class GroundDetector : MonoBehaviour
     public Transform groundObj;
     public LayerMask groundLayer;
     public float XZsizeBox, Yheight;
-    public bool isGrounded, isJumping;
+    public bool isGrounded;
     Vector3 size;
+
+    KeyCode jumpKey;
 
     void Start()
     {
         size = new Vector3(XZsizeBox, Yheight, XZsizeBox);
+        jumpKey = GetComponent<PlayerJump>().jumpKey;
     }
 
     // Update is called once per frame
@@ -21,14 +24,9 @@ public class GroundDetector : MonoBehaviour
 
         isGrounded = Physics.CheckBox(groundObj.position, size / 2, Quaternion.identity, groundLayer);
 
-        if(isGrounded == true)
+        if(isGrounded == true && !Input.GetKey(jumpKey))
         {
-            isJumping = false;
-        }
-
-        else
-        {
-            isJumping = true;
+            GetComponent<PlayerJump>().isJumping = false;
         }
     }
 

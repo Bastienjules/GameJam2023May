@@ -17,6 +17,7 @@ public class PlayerJump : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //CheckJump();
         if(Input.GetKeyDown(jumpKey))
         {
             Jump();
@@ -25,7 +26,21 @@ public class PlayerJump : MonoBehaviour
 
     void Jump()
     {
-
+        isJumping = true;
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+    }
+
+
+    void CheckJump()
+    {
+        if(rb.velocity.y >0)
+        {
+            isJumping = true;
+        }
+
+        else
+        {
+            isJumping = false;
+        }
     }
 }
