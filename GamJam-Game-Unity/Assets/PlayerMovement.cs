@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
     bool move = false;
     float speed;
     public float walkSpeed, runSpeed, shieldSpeed;
+    public Transform Body;
 
     [Header("GroundDetection")]
     public Transform groundBox;
@@ -93,36 +94,39 @@ public class PlayerMovement : MonoBehaviour
 
         if (moveZ > 0)
         {
-            transform.localEulerAngles = new Vector3(0, 0, 0);
+            Body.transform.localEulerAngles = new Vector3(0, 0, 0);
         }
 
         if (moveZ < 0)
         {
-            transform.localEulerAngles = new Vector3(0, 180, 0);
+            Body.transform.localEulerAngles = new Vector3(0, 180, 0);
         }
 
         if (moveX < 0)
         {
-            transform.localEulerAngles = new Vector3(0, -90, 0);
+            Body.transform.localEulerAngles = new Vector3(0, -90, 0);
         }
 
         if (moveX > 0)
         {
-            transform.localEulerAngles = new Vector3(0, 90, 0);
+            Body.transform.localEulerAngles = new Vector3(0, 90, 0);
         }
 
-        Vector3 moveDir = new Vector3(moveX, 0, moveZ).normalized;
+        Vector3 moveDir = new Vector3(moveX, transform.position.y, moveZ).normalized;
 
         if(isGrounded == true || isGrounded == false && isJumping == true)
         {
             if (moveDir.magnitude > 0)
             {
-                rb.velocity = moveDir * speed;
+                //rb.velocity = moveDir * speed;
+                transform.Translate(moveDir.normalized * speed * Time.fixedDeltaTime);
+                move = true;
             }
 
             else
             {
                 rb.velocity = Vector3.zero;
+                move = false;
             }
         }
 
@@ -164,11 +168,13 @@ public class PlayerMovement : MonoBehaviour
         bool isIdle = moveX == 0 && moveZ == 0;
         if (isIdle || isGrounded == false)
         {
+            move = false;
             NoMove();
         }
 
         if (direction.magnitude >= 0.1f)
         {
+            move = true;
                 float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + theCam.eulerAngles.y;
                 float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
                 transform.rotation = Quaternion.Euler(0f, angle, 0f);
@@ -248,7 +254,7 @@ public class PlayerMovement : MonoBehaviour
         if (isGrounded == true && Input.GetKey(jumpKey))
         {
             isJumping = true;
-            rb.AddForce( Vector3.up * jumpForce);
+            rb.AddForce( Vector3.up * jumpForce, ForceMode.Impulse);
         }
     }
 
