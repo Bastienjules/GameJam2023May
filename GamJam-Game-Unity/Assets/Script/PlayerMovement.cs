@@ -87,22 +87,22 @@ public class PlayerMovement : MonoBehaviour
 
     void TurnPlayerBody()
     {
-        if (Zmove > 0)
+        if (forward == true)
         {
             body.transform.localEulerAngles = new Vector3(0, 0, 0);
         }
 
-        if (Zmove < 0)
+        if (back == true)
         {
             body.transform.localEulerAngles = new Vector3(0, 180, 0);
         }
 
-        if (Xmove < 0)
+        if (left == true)
         {
             body.transform.localEulerAngles = new Vector3(0, -90, 0);
         }
 
-        if (Xmove > 0)
+        if (right == true)
         {
             body.transform.localEulerAngles = new Vector3(0, 90, 0);
         }
