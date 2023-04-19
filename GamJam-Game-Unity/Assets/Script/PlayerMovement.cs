@@ -33,13 +33,12 @@ public class PlayerMovement : MonoBehaviour
         switch (typeOfMove)
         {
             case TypeOfMove.FourDirectionMove:
-                FourDirectionMove();
                 TurnPlayerBody();
+                FourDirectionMove();
                 break;
 
             case TypeOfMove.freeDirectionMove:
                 FreeDirectionMove();
-                TurnPlayerBody();
                 break;
         }
     }
@@ -54,27 +53,23 @@ public class PlayerMovement : MonoBehaviour
         
         if (isGrounded == true || isGrounded == false && isJumping == true)
         {
-            if (Input.GetKey(KeyCode.Z))
+            if (forward == true)
             {
-                forward = true;
                 transform.Translate(Vector3.forward * speed * Time.deltaTime, Space.World);
             }
 
-            if (Input.GetKey(KeyCode.S))
+            if (back == true)
             {
-                back = true;
                 transform.Translate(Vector3.back * speed * Time.deltaTime, Space.World);
             }
 
-            if (Input.GetKey(KeyCode.Q))
+            if (left == true)
             {
-                left = true;
                 transform.Translate(Vector3.left * speed * Time.deltaTime, Space.World);
             }
 
-            if (Input.GetKey(KeyCode.D))
+            if (right == true)
             {
-                right = true;
                 transform.Translate(Vector3.right * speed * Time.deltaTime, Space.World);
             }
         }
@@ -87,24 +82,50 @@ public class PlayerMovement : MonoBehaviour
 
     void TurnPlayerBody()
     {
-        if (forward == true)
+        if (Input.GetKey(KeyCode.Z) && back == false && left == false && right == false)
         {
+            forward = true;
             body.transform.localEulerAngles = new Vector3(0, 0, 0);
         }
 
-        if (back == true)
+        if (Input.GetKey(KeyCode.S) && forward == false && left == false && right == false)
         {
+            back = true;
             body.transform.localEulerAngles = new Vector3(0, 180, 0);
+
         }
 
-        if (left == true)
+        if (Input.GetKey(KeyCode.Q) && back == false && forward == false && right == false)
         {
+            left = true;
             body.transform.localEulerAngles = new Vector3(0, -90, 0);
         }
 
-        if (right == true)
+        if (Input.GetKey(KeyCode.D) && back == false && left == false && forward == false)
         {
+            right = true;
             body.transform.localEulerAngles = new Vector3(0, 90, 0);
+        }
+
+
+        if (Input.GetKeyUp(KeyCode.Z))
+        {
+            forward = false;
+        }
+
+        if (Input.GetKeyUp(KeyCode.S))
+        {
+            back = false;
+        }
+
+        if (Input.GetKeyUp(KeyCode.Q))
+        {
+            left = false;
+        }
+
+        if (Input.GetKeyUp(KeyCode.D))
+        {
+            right = false;
         }
     }
 
