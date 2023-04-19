@@ -1,64 +1,88 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    public Sounds sounds;
+    public Sounds[] sound;
     public float increaseDicreaseSpeed = 0.1f;
-    public KeyCode playSound = KeyCode.Keypad1, stopSOund = KeyCode.Keypad2;
-    AudioSource audiosource;
-
-    int selectedSound;
+    public string playOnAwake;
     
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        audiosource = GetComponent<AudioSource>();
-        selectedSound = 0;
-        SelecteSound();
+        foreach(Sounds s in sound)
+        {
+          s.source =  gameObject.AddComponent<AudioSource>();
+          s.source.clip = s.clip;
+            s.source.pitch = 0;
+            s.source.volume = 0;
+            s.source.playOnAwake = false;
+        }
     }
 
+    private void Start()
+    {
+        Play(playOnAwake);
+    }
     // Update is called once per frame
     void Update()
     {
-        Play();
-        Stop();
-        IncreaseDecreasePitch();
     }
 
-    void SelecteSound()
+    public void Play( string name)
     {
-        audiosource.clip = sounds.music[selectedSound];
+        Sounds s = Array.Find(sound, sound => sound.name == name);
+        s.source.pitch = 1;
+        s.source.volume = 1;
+        s.source.Play();
     }
 
-    void Play()
+    public void Stop(string name)
     {
-        if (Input.GetKey(playSound))
+        Sounds s = Array.Find(sound, sound => sound.name == name);
+        s.source.pitch = 0;
+        s.source.volume = 0;
+        s.source.Stop();
+    }
+    
+    public void Decrease(bool volume, string name)
+    {
+        Sounds s = Array.Find(sound, sound => sound.name == name);
+        if(volume == true)
         {
-            audiosource.Play();
+            s.source.volume = Mathf.Lerp(s.source.volume, 0, increaseDicreaseSpeed);
+        }
+
+        else
+        {
+            s.source.pitch = Mathf.Lerp(s.source.pitch, 0, increaseDicreaseSpeed);
+        }
+
+        if(s.source.pitch < 0.09 || s.source.volume < 0.09)
+        {
+            s.source.pitch = 0;
+            s.source.volume = 0;
+            s.source.Stop();
         }
     }
 
-    void Stop()
+    public void Increase(bool volume, string name)
     {
-        if (Input.GetKey(stopSOund))
+        Sounds s = Array.Find(sound, sound => sound.name == name);
+        Play(name);
+        
+       /* if(volume == true)
         {
-            audiosource.Stop();
-        }
-    }
-
-    void IncreaseDecreasePitch()
-    {
-        if(Input.GetKey(KeyCode.UpArrow))
-        {
-            audiosource.pitch = Mathf.Lerp(audiosource.pitch, 3, increaseDicreaseSpeed);
+            s.source.pitch = 1;
+            s.source.volume = Mathf.Lerp(s.source.volume, 1, increaseDicreaseSpeed);
         }
 
-
-        if (Input.GetKey(KeyCode.DownArrow))
+        else
         {
-            audiosource.pitch = Mathf.Lerp(audiosource.pitch, -3, increaseDicreaseSpeed);
-        }
+            s.source.volume = 1;
+            s.source.pitch = Mathf.Lerp(s.source.pitch, 1, increaseDicreaseSpeed);
+        }*/
     }
 }

@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
-[CreateAssetMenu]
-public class Sounds : ScriptableObject
+[System.Serializable]
+public class Sounds
 {
-    public AudioClip[] music;
-    public AudioClip[] song;
-
-
+    public AudioClip clip;
+    public string name;
+    public AudioSource source;
 }
