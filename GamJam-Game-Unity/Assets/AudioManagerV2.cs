@@ -7,10 +7,12 @@ using System;
 public class AudioManagerV2 : MonoBehaviour
 {
     public float increaseDicreaseSpeed = 0.001f;
+    public float transitionTime = 2;
     public Sounds[] sound;
 
     public AudioSource source;
     public string musicToPlayOnStart;
+    public bool switchsong;
 
     void Awake()
     {
@@ -25,6 +27,8 @@ public class AudioManagerV2 : MonoBehaviour
 
     public void PlayAudio()
     {
+        source.pitch = 1;
+        source.volume = 1;
         source.Play();
     }
 
@@ -39,15 +43,30 @@ public class AudioManagerV2 : MonoBehaviour
         source.clip = s.clip;
     }
 
-    public void Decrease()
+    public void Decrease(bool volume)
     {
-        source.volume = Mathf.Lerp(source.volume, 0, increaseDicreaseSpeed);
-    }
+        if(volume == true)
+        {
+            source.volume = Mathf.Lerp(source.volume, 0, increaseDicreaseSpeed);
 
-    public void Increase()
-    {
-        source.Play();
-        source.volume = Mathf.Lerp(source.volume, 1, increaseDicreaseSpeed);
+            if (source.volume <= 0.1)
+            {
+                StopAudio();
+                switchsong = true;
+            }
+        }
+
+
+        else
+        {
+            source.pitch = Mathf.Lerp(source.pitch, 0, increaseDicreaseSpeed);
+
+            if (source.pitch <= 0.1)
+            {
+                StopAudio();
+                switchsong = true;
+            }
+        }
     }
 
 }

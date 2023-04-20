@@ -18,7 +18,7 @@ public class PlayerJump : MonoBehaviour
     void Update()
     {
         //CheckJump();
-        if(Input.GetKeyDown(jumpKey))
+        if(Input.GetKeyDown(jumpKey) && GetComponent<PlayerGroundDetector>().isGrounded == true)
         {
             Jump();
         }
