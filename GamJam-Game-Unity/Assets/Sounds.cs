@@ -6,5 +6,4 @@ public class Sounds
 {
     public AudioClip clip;
     public string name;
-    public AudioSource source;
 }

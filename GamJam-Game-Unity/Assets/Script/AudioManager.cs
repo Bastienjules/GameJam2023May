@@ -14,11 +14,11 @@ public class AudioManager : MonoBehaviour
     {
         foreach(Sounds s in sound)
         {
-          s.source =  gameObject.AddComponent<AudioSource>();
+         /* s.source =  gameObject.AddComponent<AudioSource>();
           s.source.clip = s.clip;
-            s.source.pitch = 0;
-            s.source.volume = 0;
-            s.source.playOnAwake = false;
+            s.source.pitch = 1;
+            s.source.volume = 1;
+            s.source.playOnAwake = false;*/
         }
     }
 
@@ -34,17 +34,13 @@ public class AudioManager : MonoBehaviour
     public void Play( string name)
     {
         Sounds s = Array.Find(sound, sound => sound.name == name);
-        s.source.pitch = 1;
-        s.source.volume = 1;
-        s.source.Play();
+        //s.source.Play();
     }
 
     public void Stop(string name)
     {
         Sounds s = Array.Find(sound, sound => sound.name == name);
-        s.source.pitch = 0;
-        s.source.volume = 0;
-        s.source.Stop();
+        //s.source.Stop();
     }
     
     public void Decrease(bool volume, string name)
@@ -52,20 +48,20 @@ public class AudioManager : MonoBehaviour
         Sounds s = Array.Find(sound, sound => sound.name == name);
         if(volume == true)
         {
-            s.source.volume = Mathf.Lerp(s.source.volume, 0, increaseDicreaseSpeed);
+            //s.source.volume = Mathf.Lerp(s.source.volume, 0, increaseDicreaseSpeed);
         }
 
         else
         {
-            s.source.pitch = Mathf.Lerp(s.source.pitch, 0, increaseDicreaseSpeed);
+            //s.source.pitch = Mathf.Lerp(s.source.pitch, 0, increaseDicreaseSpeed);
         }
 
-        if(s.source.pitch < 0.09 || s.source.volume < 0.09)
+        /*if(s.source.pitch < 0.09 || s.source.volume < 0.09)
         {
             s.source.pitch = 0;
             s.source.volume = 0;
             s.source.Stop();
-        }
+        }*/
     }
 
     public void Increase(bool volume, string name)
