@@ -38,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
                 break;
 
             case TypeOfMove.freeDirectionMove:
-                //FreeDirectionMove();
+                FreeDirectionMove();
                 break;
         }
     }
@@ -82,58 +82,54 @@ public class PlayerMovement : MonoBehaviour
 
     void TurnPlayerBody()
     {
-        if (Input.GetKey(KeyCode.Z) && back == false && left == false && right == false
-            || Input.GetAxisRaw("V") > 0 && back == false && left == false && right == false)
+        if (Input.GetKey(KeyCode.Z) && back == false && left == false && right == false)
         {
             forward = true;
             body.transform.localEulerAngles = new Vector3(0, 0, 0);
         }
 
-        if (Input.GetKey(KeyCode.S) && forward == false && left == false && right == false 
-            || Input.GetAxisRaw("V") < 0 && forward == false && left == false && right == false)
+        if (Input.GetKey(KeyCode.S) && forward == false && left == false && right == false)
         {
             back = true;
             body.transform.localEulerAngles = new Vector3(0, 180, 0);
 
         }
 
-        if (Input.GetKey(KeyCode.Q) && back == false && forward == false && right == false
-            || Input.GetAxisRaw("H") < 0 && back == false && forward == false && right == false)
+        if (Input.GetKey(KeyCode.Q) && back == false && forward == false && right == false)
         {
             left = true;
             body.transform.localEulerAngles = new Vector3(0, -90, 0);
         }
 
-        if (Input.GetKey(KeyCode.D) && back == false && left == false && forward == false
-            || Input.GetAxisRaw("H") > 0 && back == false && left == false && forward == false)
+        if (Input.GetKey(KeyCode.D) && back == false && left == false && forward == false)
         {
             right = true;
             body.transform.localEulerAngles = new Vector3(0, 90, 0);
         }
 
 
-        if (Input.GetKeyUp(KeyCode.Z) || Input.GetAxisRaw("V") == 0)
+        if (Input.GetKeyUp(KeyCode.Z))
         {
             forward = false;
         }
 
-        if (Input.GetKeyUp(KeyCode.S) || Input.GetAxisRaw("V") == 0)
+        if (Input.GetKeyUp(KeyCode.S))
         {
             back = false;
         }
 
-        if (Input.GetKeyUp(KeyCode.Q) || Input.GetAxisRaw("H") == 0)
+        if (Input.GetKeyUp(KeyCode.Q))
         {
             left = false;
         }
 
-        if (Input.GetKeyUp(KeyCode.D) || Input.GetAxisRaw("H") == 0)
+        if (Input.GetKeyUp(KeyCode.D))
         {
             right = false;
         }
     }
 
-    /*void FreeDirectionMove ()
+    void FreeDirectionMove ()
     {
         isGrounded = GetComponent<PlayerGroundDetector>().isGrounded;
         isJumping = GetComponent<PlayerJump>().isJumping;
@@ -152,7 +148,7 @@ public class PlayerMovement : MonoBehaviour
         {
             transform.Translate(Vector3.zero);
         }
-    }*/
+    }
 
     void NoMove()
     {
